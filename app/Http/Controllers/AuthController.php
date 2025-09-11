@@ -2,37 +2,55 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\Usuario;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $usuario = Usuario::where('email', $request->email)->first();
+        $request->validate([
+            'email' => ['required', 'email'],
+            'senha' => ['required'],
+        ]);
 
-        if ($usuario && password_verify($request->senha, $usuario->senha)) {
-            Session::put('usuario_id', $usuario->id);
-            Session::put('usuario_nome', $usuario->nome);
+        $key = Str::lower($request->input('email')).'|'.$request->ip();
 
-            // Adiciona mensagem de sucesso
-            return redirect('/')->with('sucesso', 'Login realizado com sucesso!');
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $seconds = RateLimiter::availableIn($key);
+            throw ValidationException::withMessages([
+                'email' => trans('auth.throttle', ['seconds' => $seconds]),
+            ]);
         }
 
-        // Se falhou, mensagem de erro
-        return redirect()->back()->with('erro', 'Email ou senha incorretos.');
+        if (! Auth::attempt(['email' => $request->email, 'password' => $request->senha], $request->boolean('lembrar'))) {
+            RateLimiter::hit($key);
+
+            throw ValidationException::withMessages([
+                'email' => trans('auth.failed'),
+            ]);
+        }
+
+        RateLimiter::clear($key);
+
+        $request->session()->regenerate();
+
+        return redirect()->intended('/')->with('sucesso', 'Login realizado com sucesso!');
     }
 
-        public function register(Request $request)
+    public function register(Request $request)
     {
-        // Validação com mensagens customizadas
         $request->validate([
-            'nome' => 'required',
-            'email' => 'required|email|unique:usuarios,email',
+            'nome' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
             'senha' => 'required|min:6',
-            'confirmar_senha' => 'required|same:senha'
+            'confirmar_senha' => 'required|same:senha',
         ], [
             'nome.required' => 'O campo nome é obrigatório.',
             'email.required' => 'O campo email é obrigatório.',
@@ -41,30 +59,27 @@ class AuthController extends Controller
             'senha.required' => 'O campo senha é obrigatório.',
             'senha.min' => 'A senha deve ter pelo menos 6 caracteres.',
             'confirmar_senha.required' => 'Você precisa confirmar a senha.',
-            'confirmar_senha.same' => 'As senhas não conferem.'
+            'confirmar_senha.same' => 'As senhas não conferem.',
         ]);
 
-        try {
-            Usuario::create([
-                'nome' => $request->nome,
-                'email' => $request->email,
-                'senha' => password_hash($request->senha, PASSWORD_DEFAULT),
-                'telefone' => $request->telefone
-            ]);
+        User::create([
+            'name' => $request->nome,
+            'email' => $request->email,
+            'password' => Hash::make($request->senha),
+        ]);
 
-            return redirect('/login')->with('sucesso', 'Cadastro realizado com sucesso!');
-        } catch (\Exception $e) {
-            // Caso ocorra algum erro durante a inserção no banco, retorna com uma mensagem de erro
-            return redirect()->back()->with('erro', 'Ocorreu um erro ao tentar realizar o cadastro: ' . $e->getMessage())->withInput();
-        }
+        return redirect('/login')->with('sucesso', 'Cadastro realizado com sucesso!');
     }
 
     /**
      * Método de logout que zera a sessão e redireciona.
      */
-    public function logout()
+    public function logout(Request $request)
     {
-        session()->flush();
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect('/')->with('sucesso', 'Você saiu da sua conta.');
     }
 }
