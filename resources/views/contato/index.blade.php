@@ -10,34 +10,32 @@
 </head>
 <body>
     <div class="navbar">
-            <div class="links">
-       
-            <div class="login">
-                @if(session()->has('usuario_id'))
-                    <!-- Mensagem acolhedora e convidativa -->
-                    <span class="welcome-message">
-                        Olá, {{ session('usuario_nome') }}! Mergulhe nos melhores sabores do mar.
-                    </span>
-                    <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                           <a href="{{ url('/') }}">
-                    <img src="{{ asset('img/pexe.png') }}" alt="Bluefish - O Frescor do Mar">
-                </a>
-                <a href="{{ url('/') }}">Início</a>
-                <a href="{{ route('produtos.index') }}">Nossa Seleção</a>
-                <a href="{{ route('contato.form') }}">Fale Conosco</a>
-            </div>      @csrf
-                        <button type="submit" class="logout-btn" title="Sair da conta" style="background:none;border:none;color:inherit;cursor:pointer;">
-                            <i class="fas fa-sign-out-alt"></i> Sair
-                        </button>
-                    </form>
-                @else
-                    <!-- Incentivo para entrar e descobrir os produtos -->
-                    <a href="{{ route('login.form') }}" class="login-link" title="Entre para sentir o frescor do mar">
-                        <i class="fas fa-user"></i> Entrar
-                    </a>
-                @endif
-            </div>
+        <div class="links">
+            <a href="{{ url('/') }}">
+                <img src="{{ asset('img/pexe.png') }}" alt="Bluefish - O Frescor do Mar">
+            </a>
+            <a href="{{ url('/') }}">Início</a>
+            <a href="{{ route('produtos.index') }}">Nossa Seleção</a>
+            <a href="{{ route('contato.form') }}">Fale Conosco</a>
         </div>
+        <div class="login">
+            @auth
+                <span class="welcome-message">
+                    Olá, {{ auth()->user()->name }}! Mergulhe nos melhores sabores do mar.
+                </span>
+                <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button type="submit" class="logout-btn" title="Sair da conta" style="background:none;border:none;color:inherit;cursor:pointer;">
+                        <i class="fas fa-sign-out-alt"></i> Sair
+                    </button>
+                </form>
+            @else
+                <a href="{{ route('login.form') }}" class="login-link" title="Entre para sentir o frescor do mar">
+                    <i class="fas fa-user"></i> Entrar
+                </a>
+            @endauth
+        </div>
+    </div>
 
     <div class="contato-container">
         <div class="container">

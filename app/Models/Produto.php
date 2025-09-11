@@ -9,9 +9,9 @@ class Produto extends Model
     protected $table = 'produtos';
 
     protected $fillable = [
-        'nome', 'descricao', 'preco', 'imagem', 'categoria', 
-        'estoque', 'status', 'data_criacao', 'data_atualizacao'
+        'nome', 'descricao', 'preco', 'imagem', 'categoria',
+        'estoque', 'status',
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
 }

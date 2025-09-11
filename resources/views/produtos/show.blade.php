@@ -19,10 +19,9 @@
                 <a href="{{ route('contato.form') }}">Fale Conosco</a>
             </div>
             <div class="login">
-                @if(session()->has('usuario_id'))
-                    <!-- Mensagem acolhedora e convidativa -->
+                @auth
                     <span class="welcome-message">
-                        Olá, {{ session('usuario_nome') }}! Mergulhe nos melhores sabores do mar.
+                        Olá, {{ auth()->user()->name }}! Mergulhe nos melhores sabores do mar.
                     </span>
                     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                         @csrf
@@ -31,11 +30,10 @@
                         </button>
                     </form>
                 @else
-                    <!-- Incentivo para entrar e descobrir os produtos -->
                     <a href="{{ route('login.form') }}" class="login-link" title="Entre para sentir o frescor do mar">
                         <i class="fas fa-user"></i> Entrar
                     </a>
-                @endif
+                @endauth
             </div>
         </div>
 
