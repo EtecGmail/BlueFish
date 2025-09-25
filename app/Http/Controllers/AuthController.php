@@ -17,7 +17,11 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => ['required', 'email'],
-            'senha' => ['required'],
+            'password' => ['required'],
+        ], [
+            'email.required' => 'O campo email é obrigatório.',
+            'email.email' => 'Por favor, insira um email válido.',
+            'password.required' => 'O campo senha é obrigatório.',
         ]);
 
         $key = Str::lower($request->input('email')).'|'.$request->ip();
@@ -25,15 +29,15 @@ class AuthController extends Controller
         if (RateLimiter::tooManyAttempts($key, 5)) {
             $seconds = RateLimiter::availableIn($key);
             throw ValidationException::withMessages([
-                'email' => trans('auth.throttle', ['seconds' => $seconds]),
+                'email' => "Muitas tentativas de login. Tente novamente em {$seconds} segundos.",
             ]);
         }
 
-        if (! Auth::attempt(['email' => $request->email, 'password' => $request->senha], $request->boolean('lembrar'))) {
+        if (! Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->boolean('remember'))) {
             RateLimiter::hit($key);
 
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => 'As credenciais fornecidas não conferem com nossos registros.',
             ]);
         }
 
