@@ -63,7 +63,7 @@
         </div>
     @endif
 
-    <div class="container">
+    <div class="container" style="max-width: 1200px;">
         @yield('content')
     </div>
 

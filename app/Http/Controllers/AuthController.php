@@ -45,6 +45,11 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
+        // Redirecionamento condicional simples: se e-mail for domínio de admin, vai para o painel
+        if (str_ends_with(Str::lower($request->email), '@admin.com')) {
+            return redirect()->intended(route('admin.dashboard'));
+        }
+
         return redirect()->intended('/')->with('sucesso', 'Login realizado com sucesso!');
     }
 

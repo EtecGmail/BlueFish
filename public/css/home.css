@@ -204,16 +204,19 @@
 
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-bottom: 3rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
 }
 
 .product-preview {
-    text-align: center;
-    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background: #f8f9fa;
     border-radius: 20px;
+    padding: 2rem;
+    min-width: 0;
     transition: transform 0.3s ease;
 }
 
@@ -223,10 +226,10 @@
 
 .product-preview img {
     width: 100%;
-    height: 200px;
+    height: 140px;
     object-fit: cover;
-    border-radius: 15px;
-    margin-bottom: 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.7rem;
 }
 
 .product-preview h3 {
@@ -238,6 +241,51 @@
 .product-preview p {
     color: #666;
     line-height: 1.6;
+}
+
+@media (max-width: 992px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.2rem;
+    }
+    .product-preview img {
+        height: 140px;
+    }
+}
+
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .product-preview img {
+        height: 120px;
+    }
+}
+
+/* Responsividade para grid de destaques */
+.destaques-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.destaque-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 0.7rem;
+}
+
+@media (max-width: 768px) {
+    .destaques-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .destaque-card img {
+        height: 120px;
+    }
 }
 
 /* Contact CTA Section */
@@ -317,5 +365,34 @@
     
     .navbar .login {
         margin-top: 0.5rem;
+    }
+}
+
+.products-grid,
+.destaques-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.product-preview img,
+.destaque-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 0.7rem;
+}
+
+@media (max-width: 992px) {
+    .products-grid,
+    .destaques-grid {
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
+    }
+    .product-preview img,
+    .destaque-card img {
+        height: 100px;
     }
 }
