@@ -2,8 +2,9 @@
 
 @section('title', 'Bluefish - Home')
 
+@section('body-class', 'home-page')
+
 @section('content')
-    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="hero-container">

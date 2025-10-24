@@ -1,4 +1,9 @@
 @import 'tailwindcss';
+@import './design-tokens.css';
+@import './base.css';
+@import './components/forms.css';
+@import './components/alerts.css';
+@import './pages/home.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';

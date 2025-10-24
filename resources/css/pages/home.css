@@ -1,5 +1,5 @@
 /* Navbar Transparente Dinâmica */
-.navbar {
+.home-page .navbar {
     transition: all 0.3s ease;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
@@ -7,27 +7,27 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.navbar-scrolled {
+.home-page .navbar.navbar-scrolled {
     background: rgba(255, 255, 255, 0.95);
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.navbar a {
+.home-page .navbar a {
     color: white;
     transition: color 0.3s ease;
 }
 
-.navbar-scrolled a {
+.home-page .navbar.navbar-scrolled a {
     color: #333;
 }
 
-.navbar .welcome-message {
+.home-page .navbar .welcome-message {
     color: white;
     transition: color 0.3s ease;
 }
 
-.navbar-scrolled .welcome-message {
+.home-page .navbar.navbar-scrolled .welcome-message {
     color: #333;
 }
 
