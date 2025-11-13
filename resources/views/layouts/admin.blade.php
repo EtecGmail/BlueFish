@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin - Bluefish')</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @php($hasViteManifest = file_exists(public_path('build/manifest.json')))
+    @if($hasViteManifest)
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else
+        <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    @endif
     @stack('styles')
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -22,12 +27,12 @@
                     </a>
                 </li>
                 <li class="admin-menu-item">
-                    <a href="{{ route('admin.products.index') }}" class="admin-menu-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
+                    <a href="{{ Route::has('admin.products.index') ? route('admin.products.index') : '#' }}" class="admin-menu-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
                         <i class="fas fa-fish"></i> Produtos
                     </a>
                 </li>
                 <li class="admin-menu-item">
-                    <a href="{{ route('admin.users.index') }}" class="admin-menu-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                    <a href="{{ Route::has('admin.users.index') ? route('admin.users.index') : '#' }}" class="admin-menu-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                         <i class="fas fa-users"></i> Usuários
                     </a>
                 </li>

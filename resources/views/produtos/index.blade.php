@@ -35,9 +35,29 @@
                     <h3>{{ $produto->nome }}</h3>
                     <p class="descricao">{{ $produto->descricao }}</p>
                     <p class="preco">R$ {{ number_format($produto->preco, 2, ',', '.') }}</p>
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho
-                    </button>
+                    @auth
+                        <form action="{{ route('vendas.store') }}" method="POST" class="produto-compra-form">
+                            @csrf
+                            <input type="hidden" name="produto_id" value="{{ $produto->id }}">
+                            <label class="quantidade-label" for="quantidade-{{ $produto->id }}">Quantidade</label>
+                            <input
+                                type="number"
+                                id="quantidade-{{ $produto->id }}"
+                                name="quantidade"
+                                value="1"
+                                min="1"
+                                class="quantidade-input"
+                                required
+                            >
+                            <button type="submit" class="btn btn-secondary">
+                                <i class="fas fa-shopping-cart"></i> Comprar agora
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login.form') }}" class="btn btn-secondary">
+                            <i class="fas fa-sign-in-alt"></i> Faça login para comprar
+                        </a>
+                    @endauth
                 </div>
             </div>
         @endforeach

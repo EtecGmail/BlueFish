@@ -9,9 +9,20 @@ class Contato extends Model
     protected $table = 'contatos';
 
     protected $fillable = [
-        'nome', 'email', 'telefone', 'assunto', 'mensagem', 'status',
-        'data_envio', 'data_atualizacao'
+        'nome',
+        'email',
+        'telefone',
+        'assunto',
+        'mensagem',
+        'status',
     ];
 
-    public $timestamps = false;
+    protected $attributes = [
+        'status' => 'novo',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 }

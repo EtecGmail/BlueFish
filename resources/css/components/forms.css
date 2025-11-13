@@ -199,6 +199,37 @@
     margin: 0;
 }
 
+.produto-compra-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.produto-compra-form .btn {
+    align-self: flex-start;
+}
+
+.quantidade-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-color, #0b2039);
+}
+
+.quantidade-input {
+    width: 120px;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.quantidade-input:focus {
+    outline: none;
+    border-color: var(--primary-color, #0066cc);
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.12);
+}
+
 .form-check-label {
     font-size: 0.9rem;
     color: var(--text-color);

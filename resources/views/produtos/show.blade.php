@@ -4,7 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ $produto->nome }} - Bluefish</title>
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
+  @php($hasViteManifest = file_exists(public_path('build/manifest.json')))
+  @if($hasViteManifest)
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+  @else
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+  @endif
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -46,9 +51,29 @@
       <div class="produto-info-detalhe">
           <p>{{ $produto->descricao }}</p>
           <p class="preco">R$ {{ number_format($produto->preco, 2, ',', '.') }}</p>
-          <button class="btn btn-secondary">
-              <i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho
-          </button>
+          @auth
+              <form action="{{ route('vendas.store') }}" method="POST" class="produto-compra-form">
+                  @csrf
+                  <input type="hidden" name="produto_id" value="{{ $produto->id }}">
+                  <label class="quantidade-label" for="quantidade-produto">Quantidade</label>
+                  <input
+                      type="number"
+                      id="quantidade-produto"
+                      name="quantidade"
+                      value="1"
+                      min="1"
+                      class="quantidade-input"
+                      required
+                  >
+                  <button type="submit" class="btn btn-secondary">
+                      <i class="fas fa-shopping-cart"></i> Comprar agora
+                  </button>
+              </form>
+          @else
+              <a href="{{ route('login.form') }}" class="btn btn-secondary">
+                  <i class="fas fa-sign-in-alt"></i> Faça login para comprar
+              </a>
+          @endauth
       </div>
   </div>
 
