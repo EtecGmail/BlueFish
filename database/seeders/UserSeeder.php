@@ -10,12 +10,10 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Criar usuário de teste
         User::updateOrCreate(
             ['email' => 'teste@bluefish.com'],
             [
                 'name' => 'Usuário Teste',
-                'email' => 'teste@bluefish.com',
                 'telefone' => '11999999999',
                 'aceitou_termos_em' => now(),
                 'password' => Hash::make('123456'),
@@ -23,15 +21,17 @@ class UserSeeder extends Seeder
             ]
         );
 
-        // Criar outro usuário de teste
+        $adminEmail = env('ADMIN_USER_EMAIL', 'admin@bluefish.com');
+        $adminPassword = env('ADMIN_USER_PASSWORD', 'admin123');
+        $adminName = env('ADMIN_USER_NAME', 'Administrador Bluefish');
+
         User::updateOrCreate(
-            ['email' => 'admin@bluefish.com'],
+            ['email' => $adminEmail],
             [
-                'name' => 'Administrador',
-                'email' => 'admin@bluefish.com',
-                'telefone' => '11988887777',
+                'name' => $adminName,
+                'telefone' => env('ADMIN_USER_PHONE', '11988887777'),
                 'aceitou_termos_em' => now(),
-                'password' => Hash::make('admin123'),
+                'password' => Hash::make($adminPassword),
                 'is_admin' => true,
             ]
         );

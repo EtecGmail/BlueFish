@@ -15,8 +15,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <a href="#conteudo-admin" class="skip-link">Ir para o conteúdo principal</a>
+
     <div class="admin-container">
-        <aside class="admin-sidebar">
+        <aside class="admin-sidebar" aria-label="Menu administrativo">
             <div class="admin-logo">
                 <a href="{{ route('admin.index') }}" style="text-decoration:none;color:inherit;font-weight:600;">Bluefish Admin</a>
             </div>
@@ -38,7 +40,7 @@
                 </li>
             </ul>
         </aside>
-        <main class="admin-content">
+        <main class="admin-content" id="conteudo-admin">
             @yield('content')
         </main>
     </div>

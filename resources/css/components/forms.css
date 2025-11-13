@@ -7,7 +7,7 @@
 .form-section {
     background: var(--white);
     border-radius: 8px;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-small);
     padding: 2rem;
     margin-bottom: 2rem;
 }
@@ -30,7 +30,7 @@
 .form-container {
     background: var(--white);
     border-radius: 12px;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-small);
     padding: 2rem;
 }
 

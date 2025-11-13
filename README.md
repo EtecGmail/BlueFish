@@ -1,66 +1,107 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Bluefish
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Soluções digitais para distribuição de pescados com foco em UX acessível, responsividade mobile-first e fluxo seguro de vendas.
 
-## About Laravel
+## Visão geral
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+A Bluefish é um painel Laravel que concentra vitrine de produtos, fluxo de vendas, área de contato e uma área administrativa protegida. O projeto segue o Guia Yuri Garcia Pardinho - Método Amarelo, priorizando simplicidade, clareza e segurança. A interface foi redesenhada para melhorar contraste, navegação por teclado e comportamento em telas pequenas.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Principais recursos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Layout responsivo mobile-first com navegação acessível, botão de menu e skip link.
+- Páginas de autenticação, vitrine de produtos, detalhes individuais, contato e histórico de compras.
+- Painel administrativo com métricas de vendas e acesso protegido por middleware `admin`.
+- Seeds padronizados que criam usuário administrador usando variáveis de ambiente.
+- CSS modular com design tokens (`resources/css/design-tokens.css`) e componentes reutilizáveis.
 
-## Learning Laravel
+## Stack técnica
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- PHP 8.3 + Laravel 11
+- Banco SQLite (padrão) ou qualquer banco configurado via `.env`
+- Vite com CSS modular (sem Tailwind por padrão)
+- Node.js 18+ para build front-end
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Requisitos
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Ferramenta            | Versão recomendada |
+|-----------------------|--------------------|
+| PHP                   | 8.2 ou superior    |
+| Composer              | 2.x                |
+| Node.js               | 18.x ou 20.x       |
+| npm                   | 9.x ou 10.x        |
+| SQLite (ou outro SGBD)| incluído no PHP    |
 
-## Laravel Sponsors
+### Dicas para Windows
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. **Opção recomendada (WSL 2 + Ubuntu)**
+   - Habilite o WSL2 (`wsl --install`) e reinicie.
+   - Instale Ubuntu via Microsoft Store.
+   - Dentro do Ubuntu, instale PHP, Composer e Node (use [`sudo apt install php8.2 php8.2-sqlite3 composer nodejs npm`] ou use um gerenciador como [asdf](https://asdf-vm.com/)).
+   - Trabalhe no diretório `/mnt/c/...` para acessar os arquivos do Windows.
 
-### Premium Partners
+2. **Opção nativa**
+   - Instale [Laravel Herd](https://herd.laravel.com/) ou [Laragon](https://laragon.org/) para ter PHP e serviços prontos.
+   - Garanta que o PHP usado pela linha de comando esteja no `PATH`.
+   - Instale Node.js via [nvm-windows](https://github.com/coreybutler/nvm-windows) ou instalador oficial.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Independentemente da opção, execute os comandos em um terminal com suporte a Git (PowerShell, Windows Terminal ou o próprio WSL).
 
-## Contributing
+## Como executar
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+# 1. Clonar o repositório
+git clone https://github.com/sua-conta/BlueFish.git
+cd BlueFish
 
-## Code of Conduct
+# 2. Copiar variáveis de ambiente
+cp .env.example .env
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 3. Instalar dependências do backend e frontend
+composer install
+npm install
 
-## Security Vulnerabilities
+# 4. Gerar chave da aplicação
+php artisan key:generate
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# 5. Executar migrações e seeds
+php artisan migrate --seed
 
-## License
+# 6. Subir back-end e front-end
+default: php artisan serve
+# Em outro terminal
+npm run dev
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+A aplicação ficará disponível em `http://localhost:8000`. O Vite injeta o CSS/JS automaticamente em modo desenvolvimento.
+
+### Usuário administrador
+
+As seeds criam automaticamente um usuário administrador usando as variáveis abaixo (definidas em `.env`):
+
+```
+ADMIN_USER_NAME="Administrador Bluefish"
+ADMIN_USER_EMAIL=admin@bluefish.com
+ADMIN_USER_PASSWORD=admin123
+ADMIN_USER_PHONE=11988887777
+```
+
+Após rodar `php artisan migrate --seed`, faça login com o e-mail e senha configurados para acessar `http://localhost:8000/admin/dashboard`. Edite os valores no `.env` para alterar o usuário criado nas seeds.
+
+### Outros comandos úteis
+
+```bash
+# Rodar testes automatizados
+php artisan test
+
+# Compilar assets para produção
+npm run build
+```
+
+## Padrões adotados
+
+- **Acessibilidade**: foco visível, navegação por teclado e contraste AA.
+- **UX Writing**: textos objetivos, em português brasileiro e com mensagens de erro específicas.
+- **Responsividade**: breakpoints semânticos e grid fluido.
+- **Segurança**: middleware `admin`, sessões seguras, rate limiting em login e uso de `.env` para segredos.
+
+A documentação e o código seguem o Método Amarelo, privilegiando simplicidade e clareza. Para contribuições futuras, mantenha o padrão de componentes reutilizáveis, tokens centralizados e commits rastreáveis.

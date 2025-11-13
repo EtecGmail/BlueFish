@@ -4,115 +4,125 @@
 
 @section('body-class', 'home-page')
 
-@section('content')
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="hero-container">
-            <div class="hero-content">
-                <h1>Bem-vindo à BlueFish</h1>
-                <p class="hero-subtitle">Fornecedora de peixes frescos para todos os mercados e lojas</p>
-                <div class="hero-buttons">
+@section('full-width')
+    <section class="home-hero">
+        <div class="home-hero__inner">
+            <div class="home-hero__content">
+                <div class="home-hero__headline">
+                    <h1>Frescor do mar direto para o seu negócio</h1>
+                    <p>Distribuímos pescados selecionados com qualidade certificada para mercados, empórios e restaurantes em todo o Brasil.</p>
+                </div>
+                <div class="home-hero__actions">
                     @auth
-                        <a href="{{ route('produtos.index') }}" class="btn btn-primary">Ver Nossos Produtos</a>
+                        <a href="{{ route('produtos.index') }}" class="btn btn-primary">
+                            <i class="fas fa-fish" aria-hidden="true"></i>
+                            <span>Explorar produtos</span>
+                        </a>
                     @else
-                        <a href="{{ route('login.form') }}" class="btn btn-primary">Fazer Login</a>
+                        <a href="{{ route('login.form') }}" class="btn btn-primary">
+                            <i class="fas fa-user" aria-hidden="true"></i>
+                            <span>Fazer login</span>
+                        </a>
                     @endauth
-                    <a href="{{ route('contato.form') }}" class="btn btn-secondary">Fale Conosco</a>
+                    <a href="{{ route('contato.form') }}" class="btn btn-secondary">
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                        <span>Fale conosco</span>
+                    </a>
                 </div>
             </div>
-            <div class="hero-image">
-                <img src="{{ asset('img/pescador.jpg') }}" alt="Pescador BlueFish">
-            </div>
+            <figure class="home-hero__figure">
+                <img class="home-hero__image" src="{{ asset('img/pescador.jpg') }}" alt="Pescador Bluefish selecionando peixes frescos">
+            </figure>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section class="about-section">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-text">
-                    <h2>Sobre a BlueFish</h2>
-                    <p class="about-description">
-                        A BlueFish é uma fornecedora especializada em peixes frescos, atendendo mercados, 
-                        lojas e estabelecimentos comerciais com produtos do mar de alta qualidade. 
-                        Nossa missão é levar o frescor do oceano até sua mesa.
+    <section class="section home-about">
+        <div class="section__inner home-about__grid">
+            <div class="home-about__text">
+                <div>
+                    <h2>Tradição em frutos do mar premium</h2>
+                    <p class="home-about__description">
+                        Somos especialistas em conectar pesca responsável a varejistas que valorizam qualidade, segurança e regularidade de entrega.
+                        A Bluefish nasceu no litoral brasileiro e leva esse frescor para dentro do seu estabelecimento.
                     </p>
-                    <div class="features-grid">
-                        <div class="feature-item">
-                            <i class="fas fa-fish"></i>
-                            <h3>Peixes Frescos</h3>
-                            <p>Selecionados diariamente pelos melhores pescadores</p>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-truck"></i>
-                            <h3>Entrega Rápida</h3>
-                            <p>Entregamos em todo o território nacional</p>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-shield-alt"></i>
-                            <h3>Qualidade Garantida</h3>
-                            <p>Produtos certificados e de origem confiável</p>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-store"></i>
-                            <h3>Para Mercados</h3>
-                            <p>Atendemos mercados, lojas e estabelecimentos</p>
-                        </div>
-                    </div>
                 </div>
-                <div class="about-image">
-                    <img src="{{ asset('img/peixe.jpg') }}" alt="Peixes frescos BlueFish">
+                <div class="home-feature-grid">
+                    <article class="home-feature-card">
+                        <i class="fas fa-fish" aria-hidden="true"></i>
+                        <h3>Seleção diária</h3>
+                        <p>Equipe dedicada à curadoria dos melhores pescados de cada safra.</p>
+                    </article>
+                    <article class="home-feature-card">
+                        <i class="fas fa-truck" aria-hidden="true"></i>
+                        <h3>Logística refrigerada</h3>
+                        <p>Rede de distribuição com controle de temperatura do embarque à entrega.</p>
+                    </article>
+                    <article class="home-feature-card">
+                        <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                        <h3>Rastreabilidade</h3>
+                        <p>Documentação sanitária e fiscalização em cada lote comercializado.</p>
+                    </article>
+                    <article class="home-feature-card">
+                        <i class="fas fa-store" aria-hidden="true"></i>
+                        <h3>Parcerias flexíveis</h3>
+                        <p>Planos sob medida para varejistas, empórios e redes gastronômicas.</p>
+                    </article>
                 </div>
+            </div>
+            <div class="home-about__figure">
+                <img class="home-about__image" src="{{ asset('img/peixe.jpg') }}" alt="Peixes frescos prontos para entrega">
             </div>
         </div>
     </section>
 
-    <!-- Products Preview Section -->
-    <section class="products-preview">
-        <div class="container">
-            <h2>Nossos Produtos</h2>
-            <p class="section-subtitle">Conheça nossa seleção de peixes frescos</p>
-            <div class="products-grid">
-                <div class="product-preview">
-                    <img src="{{ asset('img/salmao.jpg') }}" alt="Salmão">
-                    <h3>Salmão Fresco</h3>
-                    <p>Salmão do Atlântico, perfeito para qualquer ocasião</p>
-                </div>
-                <div class="product-preview">
-                    <img src="{{ asset('img/atum.jpg') }}" alt="Atum">
-                    <h3>Atum</h3>
-                    <p>Atum fresco, ideal para sashimi e pratos especiais</p>
-                </div>
-                <div class="product-preview">
-                    <img src="{{ asset('img/camarao.jpg') }}" alt="Camarão">
-                    <h3>Camarão</h3>
-                    <p>Camarões frescos, perfeitos para diversos pratos</p>
-                </div>
+    <section class="section home-products">
+        <div class="section__inner">
+            <div class="home-products__header">
+                <h2>Nossa curadoria de pescados</h2>
+                <p>Seleção com controle de origem, certificações ambientais e preço competitivo para o atacado.</p>
             </div>
-            @auth
-                <div class="text-center">
-                    <a href="{{ route('produtos.index') }}" class="btn btn-primary">Ver Todos os Produtos</a>
-                </div>
-            @else
-                <div class="text-center">
-                    <a href="{{ route('login.form') }}" class="btn btn-primary">Faça Login para Ver Produtos</a>
-                </div>
-            @endauth
-        </div>
-    </section>
-
-    <!-- Contact CTA Section -->
-    <section class="contact-cta">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Interessado em Nossos Produtos?</h2>
-                <p>Entre em contato conosco e descubra como podemos atender seu estabelecimento</p>
+            <div class="home-products__grid">
+                <article class="home-product-card">
+                    <img src="{{ asset('img/salmao.jpg') }}" alt="Postas de salmão fresco">
+                    <h3>Salmão Atlântico</h3>
+                    <p>Cortes nobres com certificação de sustentabilidade e padrão para sashimis.</p>
+                </article>
+                <article class="home-product-card">
+                    <img src="{{ asset('img/atum.jpg') }}" alt="Lombo de atum fresco">
+                    <h3>Atum Yellowfin</h3>
+                    <p>Opção versátil para grelhados, pokes e gastronomia japonesa.</p>
+                </article>
+                <article class="home-product-card">
+                    <img src="{{ asset('img/camarao.jpg') }}" alt="Camarões frescos Bluefish">
+                    <h3>Camarão Cinza</h3>
+                    <p>Congelamento rápido que mantém textura e sabor para pratos premium.</p>
+                </article>
+            </div>
+            <div class="home-products__cta">
                 @auth
-                    <a href="{{ route('contato.form') }}" class="btn btn-primary">Fale Conosco</a>
+                    <a href="{{ route('produtos.index') }}" class="btn btn-primary">Ver catálogo completo</a>
                 @else
-                    <a href="{{ route('login.form') }}" class="btn btn-primary">Faça Login para Contatar</a>
+                    <a href="{{ route('login.form') }}" class="btn btn-primary">Faça login para acessar a vitrine</a>
                 @endauth
             </div>
+        </div>
+    </section>
+
+    <section class="home-cta">
+        <div class="home-cta__inner">
+            <h2>Quer o frescor do mar no seu estoque?</h2>
+            <p>Converse com nossa equipe comercial e monte um portfólio alinhado ao perfil dos seus clientes.</p>
+            @auth
+                <a href="{{ route('contato.form') }}" class="btn btn-primary">
+                    <i class="fas fa-comments" aria-hidden="true"></i>
+                    <span>Agendar conversa</span>
+                </a>
+            @else
+                <a href="{{ route('login.form') }}" class="btn btn-primary">
+                    <i class="fas fa-lock" aria-hidden="true"></i>
+                    <span>Entrar para falar com o time</span>
+                </a>
+            @endauth
         </div>
     </section>
 @endsection
