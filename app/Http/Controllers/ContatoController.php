@@ -10,7 +10,7 @@ class ContatoController extends Controller
 {
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nome' => 'required',
             'email' => 'required|email',
             'telefone' => 'nullable',
@@ -18,7 +18,14 @@ class ContatoController extends Controller
             'mensagem' => 'required'
         ]);
 
-        Contato::create($request->all());
+        Contato::create([
+            'nome' => $validated['nome'],
+            'email' => $validated['email'],
+            'telefone' => $validated['telefone'] ?? null,
+            'assunto' => $validated['assunto'],
+            'mensagem' => $validated['mensagem'],
+            'status' => 'novo',
+        ]);
 
         return redirect()->back()->with('sucesso', 'Mensagem enviada com sucesso!');
     }

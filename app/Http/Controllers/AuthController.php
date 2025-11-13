@@ -15,13 +15,20 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $request->validate([
+        // Aceita tanto "senha" quanto "password" vindos do formulário
+        $request->merge([
+            'senha' => $request->filled('senha')
+                ? $request->input('senha')
+                : $request->input('password'),
+        ]);
+
+        $credentials = $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required'],
+            'senha' => ['required', 'string'],
         ], [
             'email.required' => 'O campo email é obrigatório.',
             'email.email' => 'Por favor, insira um email válido.',
-            'password.required' => 'O campo senha é obrigatório.',
+            'senha.required' => 'O campo senha é obrigatório.',
         ]);
 
         $key = Str::lower($request->input('email')).'|'.$request->ip();
@@ -33,7 +40,10 @@ class AuthController extends Controller
             ]);
         }
 
-        if (! Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->boolean('remember'))) {
+        $remember = $request->boolean('remember');
+        $password = $credentials['senha'];
+
+        if (! Auth::attempt(['email' => $credentials['email'], 'password' => $password], $remember)) {
             RateLimiter::hit($key);
 
             throw ValidationException::withMessages([

@@ -19,7 +19,7 @@
           </div>
           <div class="form-group">
               <label for="password">Senha</label>
-              <input type="password" id="password" name="password" required>
+              <input type="password" id="password" name="senha" required>
               <span id="passwordFeedback" class="form-text text-danger" style="display: none;">A senha é obrigatória.</span>
           </div>
           <div class="form-check">

@@ -43,24 +43,24 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-card-header">
-                        <div class="stat-card-title">Taxa de Conversão</div>
-                        <div class="stat-card-icon danger"><i class="fas fa-chart-line"></i></div>
+                        <div class="stat-card-title">Vendas</div>
+                        <div class="stat-card-icon danger"><i class="fas fa-receipt"></i></div>
                     </div>
-                    <div class="stat-card-value">3,2%</div>
-                    <div class="stat-card-change positive">+0,2%</div>
+                    <div class="stat-card-value">{{ $stats['vendas'] }}</div>
+                    <div class="stat-card-change positive">Faturamento R$ {{ number_format($stats['faturamento'], 2, ',', '.') }}</div>
                 </div>
             </section>
 
             <section class="grid grid-2" style="margin-bottom: 2rem;">
                 <div class="card">
                     <div class="card-content">
-                        <h3 class="card-title">Gráfico Pizza (Google Charts)</h3>
+                        <h3 class="card-title">Peixes mais vendidos (Google Charts)</h3>
                         <div id="chart-pizza" style="width: 100%; height: 320px;"></div>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-content">
-                        <h3 class="card-title">Gráfico Colunas (ECharts)</h3>
+                        <h3 class="card-title">Volume de vendas por produto (ECharts)</h3>
                         <div id="chart-colunas" style="width: 100%; height: 320px;"></div>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
 
             <section class="admin-table">
                 <div class="admin-table-header">
-                    <h2 class="admin-table-title">Ações Rápidas</h2>
+                    <h2 class="admin-table-title">Últimas vendas</h2>
                     <div class="admin-table-actions">
                         <a href="{{ route('produtos.index') }}" class="btn btn-primary">Ver Produtos</a>
                         <a href="{{ route('contato.form') }}" class="btn btn-secondary">Criar Aviso</a>
@@ -79,24 +79,30 @@
                         <thead>
                             <tr>
                                 <th>Produto</th>
-                                <th>Preço</th>
-                                <th>Atualizado</th>
+                                <th>Cliente</th>
+                                <th>Quantidade</th>
+                                <th>Valor total</th>
+                                <th>Data</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($recentes as $produto)
+                            @forelse($recentes as $venda)
                                 <tr>
-                                    <td>{{ $produto->nome }}</td>
-                                    <td>R$ {{ number_format($produto->preco, 2, ',', '.') }}</td>
-                                    <td>{{ optional($produto->updated_at)->format('d/m/Y H:i') }}</td>
+                                    <td>{{ optional($venda->produto)->nome ?? 'Produto removido' }}</td>
+                                    <td>{{ optional($venda->user)->name ?? 'Cliente removido' }}</td>
+                                    <td>{{ $venda->quantidade }}</td>
+                                    <td>R$ {{ number_format($venda->valor_total, 2, ',', '.') }}</td>
+                                    <td>{{ optional($venda->created_at)->format('d/m/Y H:i') }}</td>
                                     <td>
-                                        <a href="{{ route('produto.show', $produto->id) }}" class="btn btn-primary">Ver</a>
+                                        @if($venda->produto)
+                                            <a href="{{ route('produto.show', $venda->produto->id) }}" class="btn btn-primary">Ver produto</a>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4">Sem registros recentes.</td>
+                                    <td colspan="6">Sem vendas registradas.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -121,8 +127,8 @@
     google.charts.setOnLoadCallback(function() {
         const data = new google.visualization.DataTable();
         data.addColumn('string', 'Produto');
-        data.addColumn('number', 'Preço');
-        data.addRows(topProdutos.map(p => [p.nome, p.preco]));
+        data.addColumn('number', 'Quantidade');
+        data.addRows(topProdutos.map(p => [p.nome, p.quantidade]));
         const options = {
             legend: { position: 'bottom' },
             chartArea: { width: '90%', height: '80%' }
@@ -136,7 +142,18 @@
     if (el) {
         const chart = echarts.init(el);
         const option = {
-            tooltip: {},
+            tooltip: {
+                trigger: 'axis',
+                formatter: function(params) {
+                    if (!params.length) {
+                        return '';
+                    }
+                    const item = params[0];
+                    const produto = topProdutos[item.dataIndex];
+                    const valor = produto ? produto.valor_total : 0;
+                    return `${item.name}<br/>Quantidade: ${item.value}<br/>Faturamento: R$ ${Number(valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+                }
+            },
             xAxis: {
                 type: 'category',
                 data: topProdutos.map(p => p.nome),
@@ -145,7 +162,7 @@
             yAxis: { type: 'value' },
             series: [{
                 type: 'bar',
-                data: topProdutos.map(p => p.preco),
+                data: topProdutos.map(p => p.quantidade),
                 itemStyle: { color: '#0066cc' }
             }],
             grid: { left: '3%', right: '4%', bottom: '10%', containLabel: true }
