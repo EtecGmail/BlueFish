@@ -28,8 +28,9 @@ Route::middleware('auth')->group(function () {
     Route::view('/contato', 'contato.index')->name('contato.form');
     Route::post('/contato', [ContatoController::class, 'store'])->name('contato.store');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
 
-    // Admin
-    Route::view('/admin', 'admin.index')->name('admin.index');
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::view('/', 'admin.index')->name('index');
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 });

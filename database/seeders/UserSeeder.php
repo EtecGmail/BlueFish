@@ -16,7 +16,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Usuário Teste',
                 'email' => 'teste@bluefish.com',
+                'telefone' => '11999999999',
+                'aceitou_termos_em' => now(),
                 'password' => Hash::make('123456'),
+                'is_admin' => false,
             ]
         );
 
@@ -26,7 +29,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Administrador',
                 'email' => 'admin@bluefish.com',
+                'telefone' => '11988887777',
+                'aceitou_termos_em' => now(),
                 'password' => Hash::make('admin123'),
+                'is_admin' => true,
             ]
         );
     }

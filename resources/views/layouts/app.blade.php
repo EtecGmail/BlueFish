@@ -48,21 +48,21 @@
 
     <!-- Mensagens de Sucesso e Erro -->
     @if(session('sucesso'))
-        <div class="alert alert-success">
+        <div class="alert alert-success" role="status" aria-live="polite">
             <i class="fas fa-check-circle"></i>
             {{ session('sucesso') }}
         </div>
     @endif
 
     @if(session('erro'))
-        <div class="alert alert-error">
+        <div class="alert alert-error" role="alert" aria-live="assertive">
             <i class="fas fa-exclamation-circle"></i>
             {{ session('erro') }}
         </div>
     @endif
 
     @if($errors->any())
-        <div class="alert alert-error">
+        <div class="alert alert-error" role="alert" aria-live="assertive">
             <i class="fas fa-exclamation-circle"></i>
             <ul>
                 @foreach($errors->all() as $error)
