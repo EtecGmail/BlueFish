@@ -54,7 +54,7 @@ git clone https://github.com/sua-conta/BlueFish.git
 cd BlueFish
 
 # 2. Copiar variáveis de ambiente
-cp .env.example .env
+copy /.env.example .env
 
 # 3. Instalar dependências do backend e frontend
 composer install
@@ -67,7 +67,7 @@ php artisan key:generate
 php artisan migrate --seed
 
 # 6. Subir back-end e front-end
-default: php artisan serve
+php artisan serve
 # Em outro terminal
 npm run dev
 ```
