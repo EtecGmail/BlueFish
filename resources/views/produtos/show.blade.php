@@ -46,9 +46,12 @@
       <div class="produto-info-detalhe">
           <p>{{ $produto->descricao }}</p>
           <p class="preco">R$ {{ number_format($produto->preco, 2, ',', '.') }}</p>
-          <button class="btn btn-secondary">
-              <i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho
-          </button>
+          <form action="{{ route('produto.comprar', $produto->id) }}" method="POST">
+              @csrf
+              <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-shopping-cart"></i> Comprar Agora
+              </button>
+          </form>
       </div>
   </div>
 

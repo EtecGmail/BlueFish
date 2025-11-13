@@ -22,11 +22,17 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/produtos', [ProdutoController::class, 'index'])->name('produtos.index');
     Route::get('/produto/{id}', [ProdutoController::class, 'show'])->name('produto.show');
+    Route::post('/comprar/{id}', [ProdutoController::class, 'comprar'])->name('produto.comprar');
     Route::view('/contato', 'contato.index')->name('contato.form');
     Route::post('/contato', [ContatoController::class, 'store'])->name('contato.store');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // Admin
-    Route::view('/admin', 'admin.index')->name('admin.index');
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/', [AdminController::class, 'dashboard'])->name('index');
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+        Route::get('/export/excel', [AdminController::class, 'exportExcel'])->name('export.excel');
+        Route::get('/export/csv', [AdminController::class, 'exportCsv'])->name('export.csv');
+        Route::get('/export/pdf', [AdminController::class, 'exportPdf'])->name('export.pdf');
+    });
 });

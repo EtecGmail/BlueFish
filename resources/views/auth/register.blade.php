@@ -67,29 +67,21 @@
           @csrf
           <div class="form-group">
               <label for="nome">Nome Completo</label>
-              <input type="text" id="nome" name="nome" value="{{ old('nome') }}" required>
+              <input type="text" id="nome" name="name" value="{{ old('name') }}" required>
           </div>
           <div class="form-group">
               <label for="email">E-mail</label>
               <input type="email" id="email" name="email" value="{{ old('email') }}" required>
           </div>
           <div class="form-group">
-              <label for="telefone">Telefone</label>
-              <input type="tel" id="telefone" name="telefone" value="{{ old('telefone') }}">
-          </div>
-          <div class="form-group">
-              <label for="senha">Senha</label>
-              <input type="password" id="senha" name="senha" required>
+              <label for="password">Senha</label>
+              <input type="password" id="password" name="password" required>
               <span id="senhaFeedback" class="form-text text-danger" style="display: none;">A senha deve ter pelo menos 6 caracteres.</span>
           </div>
           <div class="form-group">
-              <label for="confirmar_senha">Confirmar Senha</label>
-              <input type="password" id="confirmar_senha" name="confirmar_senha" required>
+              <label for="password_confirmation">Confirmar Senha</label>
+              <input type="password" id="password_confirmation" name="password_confirmation" required>
               <span id="confirmarSenhaFeedback" class="form-text text-danger" style="display: none;">As senhas não coincidem.</span>
-          </div>
-          <div class="form-check">
-              <input type="checkbox" id="termos" name="termos" required>
-              <label for="termos">Li e aceito os <a href="#">Termos de Uso</a> e <a href="#">Política de Privacidade</a></label>
           </div>
           <button type="submit" class="btn btn-primary">Criar Conta</button>
       </form>
@@ -132,8 +124,8 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const senhaInput = document.getElementById('senha');
-        const confirmarSenhaInput = document.getElementById('confirmar_senha');
+        const senhaInput = document.getElementById('password');
+        const confirmarSenhaInput = document.getElementById('password_confirmation');
         const senhaFeedback = document.getElementById('senhaFeedback');
         const confirmarSenhaFeedback = document.getElementById('confirmarSenhaFeedback');
 

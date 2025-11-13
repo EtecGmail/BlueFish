@@ -56,25 +56,23 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'nome' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'senha' => 'required|min:6',
-            'confirmar_senha' => 'required|same:senha',
+            'password' => 'required|min:6|confirmed',
         ], [
-            'nome.required' => 'O campo nome é obrigatório.',
+            'name.required' => 'O campo nome é obrigatório.',
             'email.required' => 'O campo email é obrigatório.',
             'email.email' => 'Por favor, insira um email válido.',
             'email.unique' => 'Este email já está em uso.',
-            'senha.required' => 'O campo senha é obrigatório.',
-            'senha.min' => 'A senha deve ter pelo menos 6 caracteres.',
-            'confirmar_senha.required' => 'Você precisa confirmar a senha.',
-            'confirmar_senha.same' => 'As senhas não conferem.',
+            'password.required' => 'O campo senha é obrigatório.',
+            'password.min' => 'A senha deve ter pelo menos 6 caracteres.',
+            'password.confirmed' => 'As senhas não conferem.',
         ]);
 
         User::create([
-            'name' => $request->nome,
+            'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->senha),
+            'password' => Hash::make($request->password),
         ]);
 
         return redirect('/login')->with('sucesso', 'Cadastro realizado com sucesso!');

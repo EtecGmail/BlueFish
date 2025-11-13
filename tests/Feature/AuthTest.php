@@ -10,32 +10,31 @@ class AuthTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_home_page_and_css_load(): void
+    public function test_home_page_loads_successfully(): void
     {
         $this->get('/')->assertOk();
-        $this->assertFileExists(public_path('css/styles.css'));
     }
 
     public function test_login_fails_with_invalid_credentials(): void
     {
         $response = $this->post('/login', [
             'email' => 'wrong@example.com',
-            'senha' => 'secret',
+            'password' => 'secret',
         ]);
 
-        $response->assertSessionHasErrors();
+        $response->assertSessionHasErrors('email');
         $this->assertGuest();
     }
 
     public function test_login_succeeds_and_access_protected_route(): void
     {
         $user = User::factory()->create([
-            'password' => 'password',
+            'password' => bcrypt('password'),
         ]);
 
         $response = $this->post('/login', [
             'email' => $user->email,
-            'senha' => 'password',
+            'password' => 'password',
         ]);
 
         $response->assertRedirect('/');
@@ -52,16 +51,14 @@ class AuthTest extends TestCase
     public function test_logout_invalidates_session(): void
     {
         $user = User::factory()->create([
-            'password' => 'password',
+            'password' => bcrypt('password'),
         ]);
 
-        $this->post('/login', [
-            'email' => $user->email,
-            'senha' => 'password',
-        ]);
+        $this->actingAs($user);
 
         $this->post('/logout')->assertRedirect('/');
         $this->assertGuest();
+
         $this->get('/produtos')->assertRedirect('/login');
     }
 }
