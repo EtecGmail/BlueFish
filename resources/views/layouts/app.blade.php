@@ -15,66 +15,100 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="@yield('body-class')">
-    <div class="navbar" id="navbar">
-        <div class="links">
-            <a href="{{ url('/') }}">
-                <img src="{{ asset('img/pexe.png') }}" alt="Bluefish - O Frescor do Mar">
+    <a href="#conteudo-principal" class="skip-link">Ir para o conteúdo principal</a>
+
+    <header class="navbar" id="navbar" data-navbar data-open="false">
+        <div class="navbar__inner">
+            <a href="{{ url('/') }}" class="navbar__brand">
+                <img src="{{ asset('img/pexe.png') }}" alt="Bluefish">
+                <span class="sr-only">Bluefish - O frescor do mar para o seu negócio</span>
             </a>
-            <a href="{{ url('/') }}">Início</a>
-            <a href="{{ route('produtos.index') }}">Nossa Seleção</a>
-            <a href="{{ route('contato.form') }}">Fale Conosco</a>
-            @auth
-                <a href="{{ route('vendas.index') }}">Minhas Compras</a>
-            @endauth
-        </div>
-        <div class="login">
-            @auth
-                <span class="welcome-message">
-                    Olá, {{ auth()->user()->name }}! Mergulhe nos melhores sabores do mar.
-                </span>
-                <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                    @csrf
-                    <button type="submit" class="logout-btn" title="Sair da conta" style="background:none;border:none;color:inherit;cursor:pointer;">
-                        <i class="fas fa-sign-out-alt"></i> Sair
-                    </button>
-                </form>
-            @else
-                <a href="{{ route('login.form') }}" class="login-link" title="Entre para sentir o frescor do mar">
-                    <i class="fas fa-user"></i> Entrar
-                </a>
-            @endauth
-        </div>
-    </div>
 
-    <!-- Mensagens de Sucesso e Erro -->
-    @if(session('sucesso'))
-        <div class="alert alert-success" role="status" aria-live="polite">
-            <i class="fas fa-check-circle"></i>
-            {{ session('sucesso') }}
-        </div>
-    @endif
+            <button type="button" class="navbar__toggle" data-navbar-toggle aria-expanded="false" aria-controls="menu-principal">
+                <span class="sr-only">Alternar navegação</span>
+                <span class="navbar__toggle-icon" aria-hidden="true"></span>
+            </button>
 
-    @if(session('erro'))
-        <div class="alert alert-error" role="alert" aria-live="assertive">
-            <i class="fas fa-exclamation-circle"></i>
-            {{ session('erro') }}
-        </div>
-    @endif
+            <nav class="navbar__menu" id="menu-principal" aria-label="Menu principal">
+                <ul class="navbar__list">
+                    <li><a class="navbar__link" href="{{ url('/') }}">Início</a></li>
+                    <li><a class="navbar__link" href="{{ route('produtos.index') }}">Nossa Seleção</a></li>
+                    <li><a class="navbar__link" href="{{ route('contato.form') }}">Fale Conosco</a></li>
+                    @auth
+                        <li><a class="navbar__link" href="{{ route('vendas.index') }}">Minhas Compras</a></li>
+                        @if(auth()->user()->is_admin ?? false)
+                            <li><a class="navbar__link" href="{{ route('admin.dashboard') }}">Painel Admin</a></li>
+                        @endif
+                    @endauth
+                </ul>
 
-    @if($errors->any())
-        <div class="alert alert-error" role="alert" aria-live="assertive">
-            <i class="fas fa-exclamation-circle"></i>
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+                <div class="navbar__actions">
+                    @auth
+                        <span class="welcome-message" role="status">
+                            Olá, {{ auth()->user()->name }}! Aproveite o melhor do mar.
+                        </span>
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="logout-btn">
+                                <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                                <span>Sair</span>
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login.form') }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-user" aria-hidden="true"></i>
+                            <span>Entrar</span>
+                        </a>
+                        <a href="{{ route('register.form') }}" class="btn btn-secondary btn-sm">
+                            <i class="fas fa-user-plus" aria-hidden="true"></i>
+                            <span>Criar conta</span>
+                        </a>
+                    @endauth
+                </div>
+            </nav>
         </div>
-    @endif
+    </header>
 
-    <div class="container" style="max-width: 1200px;">
-        @yield('content')
-    </div>
+    <main id="conteudo-principal" class="page-content @yield('main-class')">
+        @if(session('sucesso') || session('erro') || $errors->any())
+            <div class="page-shell">
+                @if(session('sucesso'))
+                    <div class="alert alert-success" role="status" aria-live="polite">
+                        <i class="fas fa-check-circle" aria-hidden="true"></i>
+                        {{ session('sucesso') }}
+                    </div>
+                @endif
+
+                @if(session('erro'))
+                    <div class="alert alert-error" role="alert" aria-live="assertive">
+                        <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                        {{ session('erro') }}
+                    </div>
+                @endif
+
+                @if($errors->any())
+                    <div class="alert alert-error" role="alert" aria-live="assertive">
+                        <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                        <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            </div>
+        @endif
+
+        @hasSection('full-width')
+            @yield('full-width')
+        @endif
+
+        @hasSection('content')
+            <div class="page-shell">
+                @yield('content')
+            </div>
+        @endif
+    </main>
 
     <footer>
         <div class="footer-content">
@@ -101,26 +135,5 @@
     </footer>
 
     @yield('scripts')
-    
-    <script>
-        // Navbar transparente dinâmica
-        document.addEventListener('DOMContentLoaded', function() {
-            const navbar = document.getElementById('navbar');
-            
-            function updateNavbar() {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('navbar-scrolled');
-                } else {
-                    navbar.classList.remove('navbar-scrolled');
-                }
-            }
-            
-            // Atualizar no scroll
-            window.addEventListener('scroll', updateNavbar);
-            
-            // Atualizar na carga inicial
-            updateNavbar();
-        });
-    </script>
 </body>
 </html>

@@ -17,7 +17,9 @@ class AdminController extends \Illuminate\Routing\Controller
             'produtos' => Produto::count(),
             'contatos' => (class_exists(Contato::class) && Schema::hasTable('contatos')) ? Contato::count() : 0,
             'vendas' => (class_exists(Venda::class) && Schema::hasTable('vendas')) ? Venda::count() : 0,
-            'faturamento' => (class_exists(Venda::class) && Schema::hasTable('vendas')) ? (float) Venda::sum('valor_total') : 0.0,
+            'faturamento' => (class_exists(Venda::class) && Schema::hasTable('vendas'))
+                ? (float) Venda::sum('valor_total')
+                : 0.0,
         ];
 
         $topProdutos = collect();

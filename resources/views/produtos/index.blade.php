@@ -66,15 +66,8 @@
 
 @section('scripts')
 <script>
-    // Animação de fade-in e funcionalidade de busca/ordenação
+    // Funcionalidade de busca/ordenação
     document.addEventListener('DOMContentLoaded', function() {
-        const elements = document.querySelectorAll('.fade-in');
-        elements.forEach(element => {
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
-        });
-        
-        // Busca
         const busca = document.getElementById('busca');
         const cards = Array.from(document.querySelectorAll('.produto-card'));
 

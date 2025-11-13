@@ -6,7 +6,7 @@
     padding: 1rem 1.5rem;
     border-radius: 8px;
     border: 1px solid transparent;
-    background-color: var(--light-gray);
+    background-color: var(--surface-muted);
     color: var(--text-color);
     font-weight: 500;
     margin: 1.25rem 0;
