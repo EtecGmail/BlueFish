@@ -6,6 +6,7 @@ use App\Models\Produto;
 use App\Models\Venda;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 
 class VendaController extends Controller
 {
@@ -32,17 +33,31 @@ class VendaController extends Controller
             'quantidade.min' => 'A quantidade mínima é 1.',
         ]);
 
-        $produto = Produto::findOrFail($validated['produto_id']);
+        $produto = Produto::ativos()->findOrFail($validated['produto_id']);
         $quantidade = (int) $validated['quantidade'];
-        $valorTotal = round($produto->preco * $quantidade, 2);
+        $estoqueAtual = $produto->estoque;
 
-        Venda::create([
-            'user_id' => $request->user()->id,
-            'produto_id' => $produto->id,
-            'quantidade' => $quantidade,
-            'valor_total' => $valorTotal,
-            'status' => 'concluida',
-        ]);
+        if (!is_null($estoqueAtual) && $quantidade > $estoqueAtual) {
+            return back()
+                ->withInput()
+                ->with('erro', 'Quantidade indisponível em estoque no momento.');
+        }
+
+        $valorTotal = round((float) $produto->preco * $quantidade, 2);
+
+        DB::transaction(function () use ($request, $produto, $quantidade, $valorTotal) {
+            Venda::create([
+                'user_id' => $request->user()->id,
+                'produto_id' => $produto->id,
+                'quantidade' => $quantidade,
+                'valor_total' => $valorTotal,
+                'status' => 'concluida',
+            ]);
+
+            if (!is_null($produto->estoque)) {
+                $produto->decrement('estoque', $quantidade);
+            }
+        });
 
         return redirect()
             ->route('vendas.index')

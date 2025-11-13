@@ -16,6 +16,9 @@ class ProdutoFactory extends Factory
             'descricao' => $this->faker->sentence(),
             'preco' => $this->faker->randomFloat(2, 10, 500),
             'imagem' => null,
+            'categoria' => $this->faker->randomElement(['Peixes', 'Frutos do mar', 'Frios']),
+            'estoque' => $this->faker->numberBetween(5, 120),
+            'status' => 'ativo',
         ];
     }
 }

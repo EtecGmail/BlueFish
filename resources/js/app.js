@@ -67,4 +67,54 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         fadeElements.forEach((element) => element.classList.add('is-visible'));
     }
+
+    const adminSidebar = document.querySelector('[data-admin-sidebar]');
+    const adminSidebarToggle = document.querySelector('[data-admin-sidebar-toggle]');
+    const adminSidebarClose = document.querySelector('[data-admin-sidebar-close]');
+    const adminSidebarBackdrop = document.querySelector('[data-admin-sidebar-backdrop]');
+
+    if (adminSidebar && adminSidebarToggle) {
+        const setSidebarState = (open) => {
+            adminSidebar.dataset.open = open ? 'true' : 'false';
+            adminSidebarToggle.setAttribute('aria-expanded', String(open));
+            if (adminSidebarBackdrop) {
+                adminSidebarBackdrop.hidden = !open;
+            }
+        };
+
+        const closeSidebar = () => {
+            setSidebarState(false);
+            adminSidebarToggle.focus();
+        };
+
+        setSidebarState(false);
+
+        adminSidebarToggle.addEventListener('click', () => {
+            const isOpen = adminSidebar.dataset.open === 'true';
+            setSidebarState(!isOpen);
+        });
+
+        if (adminSidebarClose) {
+            adminSidebarClose.addEventListener('click', closeSidebar);
+        }
+
+        if (adminSidebarBackdrop) {
+            adminSidebarBackdrop.addEventListener('click', closeSidebar);
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && adminSidebar.dataset.open === 'true') {
+                closeSidebar();
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.matchMedia('(min-width: 64.0625rem)').matches) {
+                setSidebarState(false);
+                if (adminSidebarBackdrop) {
+                    adminSidebarBackdrop.hidden = true;
+                }
+            }
+        });
+    }
 });

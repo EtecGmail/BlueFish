@@ -24,7 +24,13 @@
                 <span class="sr-only">Bluefish - O frescor do mar para o seu negócio</span>
             </a>
 
-            <button type="button" class="navbar__toggle" data-navbar-toggle aria-expanded="false" aria-controls="menu-principal">
+            <button
+                type="button"
+                class="navbar__toggle"
+                data-navbar-toggle
+                aria-expanded="false"
+                aria-controls="menu-principal"
+            >
                 <span class="sr-only">Alternar navegação</span>
                 <span class="navbar__toggle-icon" aria-hidden="true"></span>
             </button>

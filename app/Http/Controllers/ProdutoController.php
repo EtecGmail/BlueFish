@@ -13,7 +13,10 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        $produtos = Produto::all();
+        $produtos = Produto::ativos()
+            ->orderBy('nome')
+            ->get();
+
         return view('produtos.index', compact('produtos'));
     }
 
@@ -22,7 +25,8 @@ class ProdutoController extends Controller
      */
     public function show($id)
     {
-        $produto = Produto::findOrFail($id);
+        $produto = Produto::ativos()->findOrFail($id);
+
         return view('produtos.show', compact('produto'));
     }
 }
