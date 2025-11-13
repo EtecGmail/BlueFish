@@ -9,7 +9,7 @@
             <div class="produto-card fade-in">
                 <div class="produto-imagem">
                     <img src="{{ $product->getImageUrl() }}" alt="{{ $product->name ?? $product->nome }}"
-                        onerror="this.onerror=null;this.src='{{ asset('images/default-product.png') }}';" />
+                        onerror="this.onerror=null;this.src='{{ asset('img/placeholder-product.svg') }}';" />
                 </div>
                 <div class="card-content">
                     <h3>{{ $product->name ?? $product->nome }}</h3>
