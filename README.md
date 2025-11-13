@@ -54,7 +54,7 @@ git clone https://github.com/sua-conta/BlueFish.git
 cd BlueFish
 
 # 2. Copiar variáveis de ambiente
-copy /.env.example .env
+copy .env.example .env
 
 # 3. Instalar dependências do backend e frontend
 composer install
