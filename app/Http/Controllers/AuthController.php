@@ -55,8 +55,17 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        // Redirecionamento condicional simples: se e-mail for domínio de admin, vai para o painel
-        if (str_ends_with(Str::lower($request->email), '@admin.com')) {
+        $user = $request->user();
+
+        if (! $user->is_admin) {
+            $intended = $request->session()->get('url.intended');
+
+            if ($intended && Str::startsWith($intended, url('/admin'))) {
+                $request->session()->forget('url.intended');
+            }
+        }
+
+        if ($user->is_admin) {
             return redirect()->intended(route('admin.dashboard'));
         }
 
@@ -68,22 +77,28 @@ class AuthController extends Controller
         $request->validate([
             'nome' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
+            'telefone' => 'nullable|string|max:20',
             'senha' => 'required|min:6',
             'confirmar_senha' => 'required|same:senha',
+            'termos' => 'accepted',
         ], [
             'nome.required' => 'O campo nome é obrigatório.',
             'email.required' => 'O campo email é obrigatório.',
             'email.email' => 'Por favor, insira um email válido.',
             'email.unique' => 'Este email já está em uso.',
+            'telefone.max' => 'O telefone deve ter no máximo 20 caracteres.',
             'senha.required' => 'O campo senha é obrigatório.',
             'senha.min' => 'A senha deve ter pelo menos 6 caracteres.',
             'confirmar_senha.required' => 'Você precisa confirmar a senha.',
             'confirmar_senha.same' => 'As senhas não conferem.',
+            'termos.accepted' => 'Você precisa aceitar os termos para prosseguir.',
         ]);
 
         User::create([
             'name' => $request->nome,
             'email' => $request->email,
+            'telefone' => $request->telefone,
+            'aceitou_termos_em' => now(),
             'password' => Hash::make($request->senha),
         ]);
 

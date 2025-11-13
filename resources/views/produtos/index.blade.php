@@ -76,13 +76,21 @@
         
         // Busca
         const busca = document.getElementById('busca');
-        const cards = document.querySelectorAll('.produto-card');
+        const cards = Array.from(document.querySelectorAll('.produto-card'));
+
+        cards.forEach(card => {
+            card.dataset.originalDisplay = window.getComputedStyle(card).display || 'flex';
+        });
         busca.addEventListener('input', function() {
             const termo = this.value.toLowerCase();
             cards.forEach(card => {
                 const nome = card.querySelector('h3').textContent.toLowerCase();
                 const descricao = card.querySelector('.descricao').textContent.toLowerCase();
-                card.style.display = (nome.includes(termo) || descricao.includes(termo)) ? 'block' : 'none';
+                if (nome.includes(termo) || descricao.includes(termo)) {
+                    card.style.display = card.dataset.originalDisplay || '';
+                } else {
+                    card.style.display = 'none';
+                }
             });
         });
 

@@ -51,7 +51,7 @@
 
       {{-- Exibição dos erros de validação --}}
       @if ($errors->any())
-          <div class="alert alert-danger">
+          <div class="alert alert-danger" role="alert" aria-live="assertive">
               <ul>
                   @foreach ($errors->all() as $error)
                       <li>{{ $error }}</li>
@@ -62,7 +62,7 @@
 
       {{-- Exibição das mensagens de sessão --}}
       @if(session('sucesso'))
-          <div class="alert alert-success">
+          <div class="alert alert-success" role="status" aria-live="polite">
               <i class="fas fa-check-circle"></i>
               {{ session('sucesso') }}
           </div>
